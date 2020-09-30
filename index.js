@@ -1,0 +1,286 @@
+//DEPENDENCIES ==================================
+const mysql = require("mysql");
+const inquirer = require("inquirer");
+
+//CLASSES===================================================================================
+const Employee = require("./lib/employee");
+
+//CONNECTING TO OUR DB =====================================================================
+const connection = mysql.createConnection({
+    host: "localhost",
+
+    // Your port; if not 3306
+    port: 3306,
+
+    // Your username
+    user: "root",
+
+    // Your password
+    password: "Moscow-2k15",
+    database: "employees"
+});
+
+// Initiate MySQL Connection=================================================================
+connection.connect(function(err) {
+    if (err) {
+        console.error("error connecting: " + err.stack);
+        return;
+    }
+    console.log("connected as id " + connection.threadId);
+});
+
+//RUN THE CODE===============================================================================
+
+console.log("hey!")
+
+//Run the App
+function init() {
+    inquirer
+        .prompt({
+            name: "action",
+            type: "list",
+            message: "What would you like to do?",
+            choices: [
+                "View All Employees", //++ *
+                "View All Departments", //++ *
+                "View All Roles", //++ *
+                "Search for Employee", //++
+                "Search for Employees by Manager", //++
+                "Remove Employee", // ++
+                "Remove Department", //++
+                "Remove Role", //++
+                "Add Employee", //++
+                "Add Department", //++
+                "Add Role", //++
+                "Update Employee Role", //++
+                "Update Employee Manager", // ++
+                "Calculate Payroll", //+++
+                "exit" //
+            ]
+        })
+        .then(function(answer) {
+            // console.log("hey!")
+            switch (answer.action) {
+                case "View All Employees":
+                    employeeAll();
+                    break;
+
+                case "View All Departments":
+                    deptsAll();
+                    break;
+
+                case "View All Roles":
+                    rolesAll();
+                    break;
+
+                case "Search for Employee":
+                    employeeAll();
+                    break;
+
+                case "Search for Employees by Manager":
+                    employeeManager();
+                    break;
+
+                    // case "Remove Employee":
+                    //     deleteEmployee();
+                    //     break;
+
+                    // case "Remove Department":
+                    //     deleteDept();
+                    //     break;
+
+                    // case "Remove Role":
+                    //     deleteRole();
+                    //     break;
+
+
+
+                case "Add Employee":
+                    addEmployee();
+                    break;
+
+                case "Add Department":
+                    addDept();
+                    break;
+
+                    // case "Add Role":
+                    //     addRole();
+                    //     break;
+
+
+                case "Update Employee Role":
+                    updateRole();
+                    break;
+
+                case "Update Employee Manager":
+                    updateManager();
+                    break;
+
+                    // case "Calculate Payroll":
+                    //     budgetSum();
+                    //     break;
+
+                case "exit":
+                    connection.end();
+                    break;
+            }
+        });
+}
+
+
+// OUR CODE TO MAKE THE APP FUNCTION================================================================================================================
+
+// Call employeeAll() function to see all employee info
+
+function employeeAll() {
+    var query = "SELECT * FROM employee";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table(res);
+        // }
+
+    });
+    init();
+}
+
+//Viewing all departments and info 
+function deptsAll() {
+    var query = "SELECT * FROM department";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    init();
+}
+
+function rolesAll() {
+    var query = "SELECT * FROM employee_role";
+    connection.query(query, function(err, res) {
+        if (err) throw err;
+        console.table(res);
+    });
+    init();
+}
+// employeeDept(); to sort employees by department\
+// function employeeDept() {
+//     inquirer
+//         .prompt([{
+//             name: "filterDept",
+//             type: "input",
+//             message: "Filter by department:"
+//         }].then(function(answer) {
+//             console.log(answer.filterDept);
+//             connection.query("SELECT * FROM employee WHERE ?" + {departmentName})
+//             init();
+//         }))
+
+// // Sort employees by manager then init();
+// function employeeManager() {
+//     inquirer
+//         .prompt({
+//             name: "filterManager",
+//             type: "input",
+//             message: "Filter by manager:"
+//         }, )
+//         .then(function(answer) {
+//             console.log("Hello!");
+//             console.log(answer.filterManager)
+//             connection.query("SELECT * FROM employee WHERE manager_name =?", { manager_name: answer.filterManager }, function(err, res) {
+//                 if (err) throw err;
+//                 console.table(res)
+//             })
+//             init();
+//         })
+// }
+// //Call deleteEmployee(); to delete employee
+// init();
+// //Call deleteDept(); to delete department
+// init();
+// //Call addEmployee(); to add employee
+function addEmployee() {
+    inquirer
+        .prompt([{
+            name: "firstName",
+            type: "input",
+            message: "What is the employee's first name?"
+        }, {
+            name: "lastName",
+            type: "input",
+            message: "What is the employee's last name?"
+        }, {
+            name: "titleName",
+            type: "input",
+            message: "What is the employee's job title?"
+        }, {
+            name: "departmentName",
+            type: "list",
+            message: "What department does the employee work in?",
+            choices: ["HR", "Marketing", "Sales", "Legal", "Janitorial Staff"]
+        }, ])
+        .then(function(answer) {
+
+            console.log("New employee added: " + answer.firstName + "" + answer.lastName + "" + answer.titleName + "" + answer.departmentName)
+
+
+        })
+        // init();
+}
+
+
+
+// //Call addDept(); to add Department
+
+function addDept() {
+    inquirer
+        .prompt([{
+            name: "DeptName",
+            type: "input",
+            message: "What is the name of the department you want to add?"
+        }, ])
+        .then(function(answer) {
+
+            console.log("Successfully added " + "" + answer.DeptName + "" + "!")
+
+        })
+    init();
+}
+
+
+
+// // Call updateRole(); to update employee role
+
+function updateRole() {
+    inquirer
+        .prompt([{
+            name: "updatedRole",
+            type: "input",
+            message: "What is the current employee's new job title?"
+        }, ])
+        .then(function(answer) {
+
+            console.log("Successfully updates this employee's job title to " + "" + answer.updatedRole + "" + "!")
+
+        })
+    init();
+}
+
+
+// //Call updateManager(); to update employee manager
+
+function updateManager() {
+    inquirer
+        .prompt([{
+            name: "updatedManager",
+            type: "input",
+            message: "Who is the current employee's new manager?"
+        }, ])
+        .then(function(answer) {
+
+            console.log("Successfully updates this employee's manager to " + "" + answer.updatedManager + "" + "!")
+
+        })
+    init();
+}
+// init();
+// //Call budgetSum(); to view total sum of employee salaries 
+init();
