@@ -48,12 +48,12 @@ function init() {
                 "Search for Employees by Manager", //++ *
                 "Remove Employee", // ++*
                 "Remove Department", //++*
-                "Remove Role", //+++
+                "Remove Role", //+++*
                 "Add Employee", //++ *
                 "Add Department", //++*
                 "Add Role", //++*
-                "Update Employee Role", //++
-                "Update Employee Manager", // ++
+                "Update Employee Role", //++*
+                "Update Employee Manager", // ++*
                 "Calculate Payroll", //+++
                 "exit" //
             ]
@@ -353,19 +353,21 @@ function updateRole() {
         .prompt([{
             name: "employeeID",
             type: "input",
-            message: "What is the employee's id ?"
+            message: "What is the employee's ID ?"
         }, {
-            name: "employeeID",
+            name: "roleID",
             type: "input",
-            message: "What is the employee's id ?"
+            message: "What is the employee's new role ID?"
         }])
         .then(function(answer) {
-            let query = "UPDATE employee SET role_id = ?";
-            connection.query(query, [answer.updateRole])
-            console.log("Successfully updates this employee's job title to " + "" + answer.updatedRole + "" + "!")
-
+            let query = "UPDATE employee SET role_id = ? WHERE id =?";
+            connection.query(query, [parseInt(answer.employeeID), parseInt(answer.roleID)], function(err, res) {
+                if (err) throw err;
+                console.table(res);
+            })
+            init();
         })
-    init();
+
 }
 
 
@@ -374,16 +376,22 @@ function updateRole() {
 function updateManager() {
     inquirer
         .prompt([{
-            name: "updatedManager",
+            name: "employeeID",
             type: "input",
-            message: "Who is the current employee's new manager?"
-        }, ])
+            message: "What is the employee's ID ?"
+        }, {
+            name: "managerID",
+            type: "input",
+            message: "What is the employee's new manager ID?"
+        }])
         .then(function(answer) {
-
-            console.log("Successfully updates this employee's manager to " + "" + answer.updatedManager + "" + "!")
-
+            let query = "UPDATE employee SET manager_id = ? WHERE id =?";
+            connection.query(query, [parseInt(answer.employeeID), parseInt(answer.managerID)], function(err, res) {
+                if (err) throw err;
+                console.table(res);
+            })
+            init();
         })
-    init();
 }
 
 
