@@ -74,7 +74,7 @@ function init() {
                     break;
 
                 case "Search for Employee":
-                    employeeAll();
+                    employee();
                     break;
 
                 case "Search for Employees by Manager":
@@ -103,9 +103,9 @@ function init() {
                     addDept();
                     break;
 
-                    // case "Add Role":
-                    //     addRole();
-                    //     break;
+                case "Add Role":
+                    addRole();
+                    break;
 
 
                 case "Update Employee Role":
@@ -130,7 +130,7 @@ function init() {
 
 // OUR CODE TO MAKE THE APP FUNCTION================================================================================================================
 
-// Call employeeAll() function to see all employee info
+// employeeAll() function to see all employee info
 
 function employeeAll() {
     var query = "SELECT * FROM employee";
@@ -153,6 +153,7 @@ function deptsAll() {
     init();
 }
 
+//Viewing all roles and info
 function rolesAll() {
     var query = "SELECT * FROM employee_role";
     connection.query(query, function(err, res) {
@@ -161,41 +162,53 @@ function rolesAll() {
     });
     init();
 }
-// employeeDept(); to sort employees by department\
-// function employeeDept() {
-//     inquirer
-//         .prompt([{
-//             name: "filterDept",
-//             type: "input",
-//             message: "Filter by department:"
-//         }].then(function(answer) {
-//             console.log(answer.filterDept);
-//             connection.query("SELECT * FROM employee WHERE ?" + {departmentName})
-//             init();
-//         }))
+
+//Search for employee and info by name
+function employee() {
+    inquirer
+        .prompt({
+            name: "employeeName",
+            type: "input",
+            message: "Which employee are you looking for? Write First and Last name."
+        })
+        .then(function(answer) {
+            // var query = "SELECT id,first_name, last_name, employee_role, manager_name FROM employee WHERE ?";
+            // connection.query(query, function(err, res) {
+            //     if (err) throw err;
+            //     console.table(res);
+
+            console.log("you go!")
+        });
+
+
+}
 
 // // Sort employees by manager then init();
-// function employeeManager() {
-//     inquirer
-//         .prompt({
-//             name: "filterManager",
-//             type: "input",
-//             message: "Filter by manager:"
-//         }, )
-//         .then(function(answer) {
-//             console.log("Hello!");
-//             console.log(answer.filterManager)
-//             connection.query("SELECT * FROM employee WHERE manager_name =?", { manager_name: answer.filterManager }, function(err, res) {
-//                 if (err) throw err;
-//                 console.table(res)
-//             })
-//             init();
-//         })
-// }
+function employeeManager() {
+    inquirer
+        .prompt({
+            name: "filterManager",
+            type: "input",
+            message: "Filter by manager:"
+        }, )
+        .then(function(answer) {
+            console.log("Hello!");
+            console.log(answer.filterManager)
+            connection.query("SELECT * FROM employee WHERE manager_id ?", { manager_name: answer.filterManager }, function(err, res) {
+                if (err) throw err;
+                console.table(res)
+            })
+            init();
+        })
+}
+
 // //Call deleteEmployee(); to delete employee
 // init();
 // //Call deleteDept(); to delete department
 // init();
+
+// Delete role and info 
+
 // //Call addEmployee(); to add employee
 function addEmployee() {
     inquirer
@@ -208,27 +221,33 @@ function addEmployee() {
             type: "input",
             message: "What is the employee's last name?"
         }, {
-            name: "titleName",
+            name: "role_id",
             type: "input",
-            message: "What is the employee's job title?"
+            message: "What is the employee's role id?"
         }, {
-            name: "departmentName",
-            type: "list",
-            message: "What department does the employee work in?",
-            choices: ["HR", "Marketing", "Sales", "Legal", "Janitorial Staff"]
+            name: "manager_id",
+            type: "input",
+            message: "What is your manager's id?",
+
         }, ])
         .then(function(answer) {
+            let query = "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)"
 
-            console.log("New employee added: " + answer.firstName + "" + answer.lastName + "" + answer.titleName + "" + answer.departmentName)
+            // const newEmployee = new Employee(answer.firstName, answer.lastName, parseInt(answer.role_id), parseInt(answer.manager_id));
+            connection.query(query, [answer.firstName, answer.lastName, parseInt(answer.role_id), parseInt(answer.manager_id)], function(err, res) {
+                if (err) throw err;
+                // console.log(newEmployee)
+                console.log(res);
 
+            })
 
         })
-        // init();
+
 }
 
 
 
-// //Call addDept(); to add Department
+// //Add new Department
 
 function addDept() {
     inquirer
@@ -245,6 +264,22 @@ function addDept() {
     init();
 }
 
+//add Role and info 
+
+function addRole() {
+    inquirer
+        .prompt([{
+            name: "RoleName",
+            type: "input",
+            message: "What is the name of the department you want to add?"
+        }, ])
+        .then(function(answer) {
+
+            console.log("Successfully added " + "" + answer.RoleName + "" + "!")
+
+        })
+    init();
+}
 
 
 // // Call updateRole(); to update employee role
@@ -281,6 +316,8 @@ function updateManager() {
         })
     init();
 }
-// init();
+
+
+
 // //Call budgetSum(); to view total sum of employee salaries 
 init();
