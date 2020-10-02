@@ -2,8 +2,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 
-//CLASSES===================================================================================
-const Employee = require("./lib/employee");
+
 
 //CONNECTING TO OUR DB =====================================================================
 const connection = mysql.createConnection({
@@ -16,7 +15,7 @@ const connection = mysql.createConnection({
     user: "root",
 
     // Your password
-    password: "",
+    password: "Moscow-2k15",
     database: "employees"
 });
 
@@ -178,10 +177,8 @@ function employee() {
             connection.query(query, [answer.firstName, answer.lastName], function(err, res) {
                 if (err) throw err;
                 console.table(res);
-
-
             });
-
+            init();
         })
 }
 
@@ -198,9 +195,8 @@ function employeeManager() {
             connection.query(query, [parseInt(answer.filterManager)], function(err, res) {
                 if (err) throw err;
                 console.table(res);
-
-
             });
+            init();
         })
 }
 
@@ -223,6 +219,7 @@ function deleteEmployee() {
                 if (err) throw err;
                 console.table(res);
             })
+            init();
         })
 }
 
@@ -245,7 +242,7 @@ function deleteDept() {
             init();
         })
 }
-// init();
+
 
 // Delete role and info 
 function deleteRole() {
@@ -260,6 +257,7 @@ function deleteRole() {
                 if (err) throw err;
                 console.table(res)
             })
+            init();
         })
 
 }
@@ -292,6 +290,7 @@ function addEmployee() {
                 if (err) throw err;
                 console.log(res);
             })
+            init();
         })
 }
 
@@ -396,5 +395,6 @@ function updateManager() {
 
 
 
-// //Call budgetSum(); to view total sum of employee salaries 
+// //Call budgetSum(); to view total sum of employee salaries
+
 init();

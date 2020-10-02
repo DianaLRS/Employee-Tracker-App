@@ -10,9 +10,12 @@ This app allows employers to keep track of all employees. They can search for em
 * [Tests](#tests)
 * [Questions](#questions)
 # Installation
-The following necessary dependencies must be installed to run the application properly: mysql and inquierer
+The following necessary dependencies must be installed to run the application properly: mysql and inquierer. 
 # Usage
-In order to use this app, run the app in the terminal and answer the prompted questions. Ensure there are no spelling mistakes. 
+In order to use this app, run the employees database in MySQL Workbench. Run the app in the terminal and answer the prompted questions. Don't forget to add your password to the index.js file. Ensure there are no spelling mistakes. 
+
+[![Demo-Video](https://img.youtube.com/vi/NAG29V9oLpM.jpg)](https://www.youtube.com/watch?v=NAG29V9oLpM&ab)
+
 # License
 This project is licensed under no liscence. 
 # Contributing

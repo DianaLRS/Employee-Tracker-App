@@ -19,7 +19,7 @@ dept_name VARCHAR(30) NOT NULL,
 PRIMARY KEY (id)
 );
 
-DROP TABLE employee;
+
 CREATE TABLE employee(
 id INT NOT NULL AUTO_INCREMENT,
 first_name VARCHAR(30) NOT NULL,
@@ -53,4 +53,5 @@ SELECT salary, dept_name, first_name, last_name, title
 FROM employee_role
 INNER JOIN employee
 ON employee_role.id = employee.role_id
+
 
