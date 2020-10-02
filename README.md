@@ -14,7 +14,7 @@ The following necessary dependencies must be installed to run the application pr
 # Usage
 In order to use this app, run the employees database in MySQL Workbench. Run the app in the terminal and answer the prompted questions. Don't forget to add your password to the index.js file. Ensure there are no spelling mistakes. 
 
-[![Demo-Video](https://img.youtube.com/vi/NAG29V9oLpM.jpg)](https://www.youtube.com/watch?v=NAG29V9oLpM&ab)
+[![Demo-Video](https://img.youtube.com/vi/NAG29V9oLpM/0.jpg)](https://www.youtube.com/watch?v=NAG29V9oLpM&ab)
 
 # License
 This project is licensed under no liscence. 
